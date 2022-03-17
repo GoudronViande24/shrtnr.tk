@@ -6,7 +6,7 @@ https://api.shrtnr.tk
 
 ### Calling method: HTTP POST Request format: JSON
 Example:
-````
+````json
 {
 	"url": "https://example.com"
 }
@@ -20,18 +20,17 @@ Example:
 
 ### Example response (JSON):
 
-````
+```json
 {
-    "status": 200,
-    "key": "/demo"
+	"status": 200,
+	"key": "/demo"
 }
-````
+```
 
 ### Response parameters:
 |Parameter name|Type|Description|Example|
 | :----:| :----: | :----: | :----: |
-|status|int| Status code: 200 is a successful call |200|	
+|status|int| Status code: 200 is a successful call |200|
 |key|string| Short link suffix: you need to add the domain name prefix|/xxxxxx|
 
-Note: The interface will only return the key value corresponding to the short link. In actual use, the corresponding domain name prefix needs to be added. For example, if the key parameter returned in the example is "/demo", we need to add "https://url.dem0.workers.dev" as a prefix, it can be used by completing it as a complete url, namely: https://url.dem0.workers.dev/demo
-
+Note: The interface will only return the key value corresponding to the short link. In actual use, the corresponding domain name prefix needs to be added. For example, if the key parameter returned in the example is "/demo", we need to add "https://shrtnr.tk" as a prefix, it can be used by completing it as a complete url, namely: https://shrtnr.tk/demo
