@@ -1,14 +1,8 @@
-
-
 # API documentation
-
-[简体中文](API_zh-hans.md)
-
 Short links can be generated in a programmable way by calling the API interface
 
 ### API call address
-
-Self-deployed CloudFlare Worker address, for example: https://url.dem0.workers.dev or a self-bound domain name
+https://api.shrtnr.tk
 
 ### Calling method: HTTP POST Request format: JSON
 Example:
