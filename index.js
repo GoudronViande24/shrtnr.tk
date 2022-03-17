@@ -1,6 +1,6 @@
 const config = {
 	no_ref: "off", // Control the HTTP referrer header, if you want to create an anonymous link that will hide the HTTP Referer header, please set to "on" .
-	theme: "", // Homepage theme, use the empty value for default theme. To use urlcool theme, please fill with "theme/urlcool" .
+	theme: "default", // Homepage theme, use the empty value for default theme. To use urlcool theme, please fill with "theme/urlcool" .
 	cors: "on", // Allow Cross-origin resource sharing for API requests.
 	unique_link: false, // If it is true, the same long url will be shorten into the same short url
 	custom_link: false, // Allow users to customize the short url.
@@ -9,12 +9,12 @@ const config = {
 const html404 = `<!DOCTYPE html>
 <body>
   <h1>404 Not Found.</h1>
-  <p>The url you visit is not found.</p>
-  <a href="https://github.com/xyTom/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a>
-</body>`
+  <p>The url you visited does not exist.</p>
+  <a href="https://github.com/GoudronViande24/shrtnr.tk" target="_blank">See on GitHub</a>
+</body>`;
 
 let response_header = {
-	"content-type": "text/html;charset=UTF-8",
+	"content-type": "text/html;charset=UTF-8"
 }
 
 if (config.cors == "on") {
@@ -112,7 +112,7 @@ async function handleRequest(request) {
 				headers: response_header,
 			})
 		} else {
-			return new Response(`{"status":200,"key":": Error:Reach the KV write limitation."}`, {
+			return new Response(`{"status":200,"key":": Error: Reached the KV write limitation."}`, {
 				headers: response_header,
 			})
 		}
@@ -128,24 +128,23 @@ async function handleRequest(request) {
 	console.log(path)
 	if (!path) {
 
-		const html = await fetch("https://xytom.github.io/Url-Shorten-Worker/" + config.theme + "/index.html")
+		const html = await fetch("https://static.shrtnr.tk/themes/" + config.theme + "/index.html");
 
 		return new Response(await html.text(), {
 			headers: {
 				"content-type": "text/html;charset=UTF-8",
-			},
-		})
+			}
+		});
 	}
-	const value = await LINKS.get(path)
-	console.log(value)
-
+	const value = await LINKS.get(path);
+	console.log(value);
 
 	const location = value
 	if (location) {
 		if (config.no_ref == "on") {
-			let no_ref = await fetch("https://xytom.github.io/Url-Shorten-Worker/no-ref.html")
-			no_ref = await no_ref.text()
-			no_ref = no_ref.replace(/{Replace}/gm, location)
+			let no_ref = await fetch("https://static.shrtnr.tk/no-ref.html");
+			no_ref = await no_ref.text();
+			no_ref = no_ref.replace(/{Replace}/gm, location);
 			return new Response(no_ref, {
 				headers: {
 					"content-type": "text/html;charset=UTF-8",
