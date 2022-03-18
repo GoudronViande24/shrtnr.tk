@@ -6,13 +6,6 @@ const config = {
 	custom_link: false, // Allow users to customize the short url.
 }
 
-const html404 = `<!DOCTYPE html>
-<body>
-  <h1>404 Not Found.</h1>
-  <p>The url you visited does not exist.</p>
-  <a href="https://github.com/GoudronViande24/shrtnr.tk" target="_blank">See on GitHub</a>
-</body>`;
-
 let response_header = {
 	"content-type": "text/html;charset=UTF-8"
 }
@@ -27,7 +20,7 @@ if (config.cors == "on") {
 
 async function randomString(len) {
 	len = len || 6;
-	let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+	let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
 	let maxPos = $chars.length;
 	let result = '';
 	for (i = 0; i < len; i++) {
@@ -102,7 +95,7 @@ async function handleRequest(request) {
 			stat, random_key = await save_url(req["url"])
 		}
 		if (typeof (stat) == "undefined") {
-			console.log("https://shrtnr.tk/"+random_key, "==>", req["url"]);
+			console.log("https://shrtnr.tk/" + random_key, "==>", req["url"]);
 			return new Response(`{"status":200,"key":"${random_key}","url":"${req["url"]}","shortUrl":"https://shrtnr.tk/${random_key}"}`, {
 				headers: response_header,
 			})
@@ -148,7 +141,11 @@ async function handleRequest(request) {
 		}
 
 	}
+
 	// If request not in kv, return 404
+	let html404 = await fetch(`https://static.shrtnr.tk/themes/${config.theme}/404.html`);
+	html404 = await html404.text();
+
 	return new Response(html404, {
 		headers: {
 			"content-type": "text/html;charset=UTF-8",
