@@ -108,7 +108,7 @@ async function handleRequest(request) {
 		}
 		console.log(stat)
 		if (typeof (stat) == "undefined") {
-			return new Response(`{"status":200,"key":"/` + random_key + `"}`, {
+			return new Response(`{"status":200,"key":"${random_key}","url":"${req["url"]}","shortUrl":"https://shrtnr.tk/${random_key}"}`, {
 				headers: response_header,
 			})
 		} else {
