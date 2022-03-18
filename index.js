@@ -47,7 +47,6 @@ async function sha512(url) {
 	)
 	const hashArray = Array.from(new Uint8Array(url_digest)); // convert buffer to byte array
 	const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-	//console.log(hashHex)
 	return hashHex
 }
 async function checkURL(URL) {
@@ -66,7 +65,6 @@ async function checkURL(URL) {
 async function save_url(URL) {
 	let random_key = await randomString()
 	let is_exist = await LINKS.get(random_key)
-	console.log(is_exist)
 	if (is_exist == null)
 		return await LINKS.put(random_key, URL), random_key
 	else
@@ -74,7 +72,6 @@ async function save_url(URL) {
 }
 async function is_url_exist(url_sha512) {
 	let is_exist = await LINKS.get(url_sha512)
-	console.log(is_exist)
 	if (is_exist == null) {
 		return false
 	} else {
@@ -82,10 +79,8 @@ async function is_url_exist(url_sha512) {
 	}
 }
 async function handleRequest(request) {
-	console.log(request)
 	if (request.method === "POST") {
 		let req = await request.json()
-		console.log(req["url"])
 		if (!await checkURL(req["url"])) {
 			return new Response(`{"status":500,"key":": Error: Url illegal."}`, {
 				headers: response_header,
@@ -100,14 +95,14 @@ async function handleRequest(request) {
 			} else {
 				stat, random_key = await save_url(req["url"])
 				if (typeof (stat) == "undefined") {
-					console.log(await LINKS.put(url_sha512, random_key))
+					// console.log(await LINKS.put(url_sha512, random_key))
 				}
 			}
 		} else {
 			stat, random_key = await save_url(req["url"])
 		}
-		console.log(stat)
 		if (typeof (stat) == "undefined") {
+			console.log("https://shrtnr.tk/"+random_key, "==>", req["url"]);
 			return new Response(`{"status":200,"key":"${random_key}","url":"${req["url"]}","shortUrl":"https://shrtnr.tk/${random_key}"}`, {
 				headers: response_header,
 			})
@@ -125,7 +120,6 @@ async function handleRequest(request) {
 
 	const requestURL = new URL(request.url)
 	const path = requestURL.pathname.split("/")[1]
-	console.log(path)
 	if (!path) {
 
 		const html = await fetch("https://static.shrtnr.tk/themes/" + config.theme + "/index.html");
@@ -137,7 +131,6 @@ async function handleRequest(request) {
 		});
 	}
 	const value = await LINKS.get(path);
-	console.log(value);
 
 	const location = value
 	if (location) {
