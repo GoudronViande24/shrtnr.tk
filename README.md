@@ -5,7 +5,7 @@ A URL Shortener with API created using Cloudflare Worker
 [API Documentation](API.md)
 
 ## See in action
-https://shrntr.tk
+https://shrtnr.tk
 
 ## Support
 - [Discord server](https://discord.artivain.com)
