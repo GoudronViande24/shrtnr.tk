@@ -45,12 +45,9 @@ function shorten() {
  * @param {*} attr 
  */
 function copyUrl() {
-	const text = document.getElementById(result);
-
-	text.select();
-	text.setSelectionRange(0, 99999); // Mobile devices
-	
-	navigator.clipboard.writeText(text.value);
+	result.select();
+	result.setSelectionRange(0, 99999); // Mobile devices
+	navigator.clipboard.writeText(result.value);
 }
 
 // Activate popovers
