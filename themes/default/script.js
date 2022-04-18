@@ -2,8 +2,11 @@ let res;
 const searchButton = document.getElementById("searchbtn");
 const form = document.getElementById("form");
 const result = document.getElementById("result");
+const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+const copyButton = document.getElementById("copy");
 
 form.addEventListener("submit", shorten);
+copyButton.addEventListener("click", copyUrl)
 
 /**
  * Shorten a URL
@@ -19,22 +22,21 @@ function shorten() {
 	fetch(window.location.pathname, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ url: document.querySelector("#text").value })
+		body: JSON.stringify({ url: document.getElementById("text").value })
 	}).then((response) => {
 		return response.json();
 	}).then((myJson) => {
-			res = myJson;
-			searchButton.disabled = false;
-			searchButton.innerHTML = ' Shorten it';
-			if (res.key !== "")
-				result.innerHTML = window.location.host + res.key;
-			$('#exampleModal').modal('show')
-		}).catch((err) => {
-			alert("Unknow error. Please retry!");
-			console.log(err);
-			searchButton.disabled = false;
-			searchButton.innerHTML = 'Shorten it!';
-		});
+		res = myJson;
+		searchButton.disabled = false;
+		searchButton.innerHTML = 'Shorten it!';
+		if (res.key !== "") result.innerHTML = window.location.host + res.key;
+		modal.show();
+	}).catch((err) => {
+		alert("Unknow error. Please retry!");
+		console.log(err);
+		searchButton.disabled = false;
+		searchButton.innerHTML = 'Shorten it!';
+	});
 }
 
 /**
@@ -42,46 +44,19 @@ function shorten() {
  * @param {string} id - The ID where the result is stored
  * @param {*} attr 
  */
-function copyUrl(id = "result", attr) {
-	let target = null;
+function copyUrl() {
+	const text = document.getElementById(result);
 
-	if (attr) {
-		target = document.createElement('div');
-		target.id = 'tempTarget';
-		target.style.opacity = '0';
-		if (id) {
-			let curNode = document.querySelector('#' + id);
-			target.innerText = curNode[attr];
-		} else {
-			target.innerText = attr;
-		}
-		document.body.appendChild(target);
-	} else {
-		target = document.querySelector('#' + id);
-	}
-
-	try {
-		let range = document.createRange();
-		range.selectNode(target);
-		window.getSelection().removeAllRanges();
-		window.getSelection().addRange(range);
-		document.execCommand('copy');
-		window.getSelection().removeAllRanges();
-		console.log('Copy success');
-	} catch (e) {
-		console.log('Copy error');
-	}
-
-	if (attr) {
-		// remove temp target
-		target.parentElement.removeChild(target);
-	}
+	text.select();
+	text.setSelectionRange(0, 99999); // Mobile devices
+	
+	navigator.clipboard.writeText(text.value);
 }
 
 // Activate popovers
 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
 var popoverList = popoverTriggerList.map((popoverTriggerEl) => {
-  return new bootstrap.Popover(popoverTriggerEl);
+	return new bootstrap.Popover(popoverTriggerEl);
 });
 
 console.log("https://github.com/GoudronViande24/shrtnr.tk/");
