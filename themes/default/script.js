@@ -19,7 +19,7 @@ function shorten() {
 	searchButton.disabled = true;
 	searchButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Please wait...';
 
-	fetch(window.location.pathname, {
+	fetch("https://shrtnr.tk", {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ url: document.getElementById("text").value })
@@ -29,7 +29,7 @@ function shorten() {
 		res = myJson;
 		searchButton.disabled = false;
 		searchButton.innerHTML = 'Shorten it!';
-		if (res.key !== "") result.innerHTML = window.location.host + res.key;
+		if (res.key !== "" && res.shortUrl !== "") result.innerHTML = res.shortUrl;
 		modal.show();
 	}).catch((err) => {
 		alert("Unknow error. Please retry!");
