@@ -45,9 +45,7 @@ function shorten() {
  * @param {*} attr 
  */
 function copyUrl() {
-	result.select();
-	result.setSelectionRange(0, 99999); // Mobile devices
-	navigator.clipboard.writeText(result.value);
+	navigator.clipboard.writeText(result.innerText);
 }
 
 // Activate popovers
